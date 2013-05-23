@@ -23,12 +23,13 @@ let g:loaded_vimwiki_html_auto = 1
 
 " UTILITY "{{{
 function s:get_completion_index(sym) "{{{
-  for idx in range(1, 5)
-    if match(g:vimwiki_listsyms, '\C\%'.idx.'v'.a:sym) != -1
-      return (idx-1)
-    endif
-  endfor
-  return 0
+  return index(g:vimwiki_listsyms, a:sym)
+  "for idx in range(1, 5)
+  "  if match(g:vimwiki_listsyms, '\C\%'.idx.'v'.a:sym) != -1
+  "    return (idx-1)
+  "  endif
+  "endfor
+  "return 0
 endfunction "}}}
 
 function! s:root_path(subdir) "{{{
@@ -878,16 +879,16 @@ function! s:process_tag_list(line, lists) "{{{
   let lines = []
   let processed = 0
 
-  if a:line =~ g:vimwiki_rxListBullet
+  if a:line =~ '^\s*'.g:vimwiki_rxListBullet.'\s\+'
     let lstSym = matchstr(a:line, '[*-]')
     let lstTagOpen = '<ul>'
     let lstTagClose = '</ul>'
-    let lstRegExp = g:vimwiki_rxListBullet
-  elseif a:line =~ g:vimwiki_rxListNumber
+    let lstRegExp = '^\s*'.g:vimwiki_rxListBullet.'\s\+'
+  elseif a:line =~ '^\s*'.g:vimwiki_rxListNumber.'\s\+'
     let lstSym = '#'
     let lstTagOpen = '<ol>'
     let lstTagClose = '</ol>'
-    let lstRegExp = g:vimwiki_rxListNumber
+    let lstRegExp = '^\s*'.g:vimwiki_rxListNumber.'\s\+'
   else
     let lstSym = ''
     let lstTagOpen = ''
