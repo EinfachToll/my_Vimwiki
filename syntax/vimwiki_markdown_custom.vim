@@ -369,6 +369,14 @@ syntax match VimwikiTableRow /^\s*|.\+|\s*$/
                            \ VimwikiEqInT,
                            \ @Spell
 
+if exists("+conceallevel") && g:vimwiki_beautiful_tables >= 1
+  syntax match VimwikiTableHeaderLine /^\s*|[|-]\+|\s*$/ transparent
+        \ contains=VimwikiHeaderBeam,VimwikiHeaderLineBegin,
+        \ VimwikiHeaderLineMiddle,VimwikiHeaderLineEnd
+else
+  syntax match VimwikiTableHeaderLine /^\s*|[|-]\+|\s*$/ transparent
+      \ contains=VimwikiCellSeparator,VimwikiHeaderBeam
+endif
 " }}}
 
 " header groups highlighting "{{{
