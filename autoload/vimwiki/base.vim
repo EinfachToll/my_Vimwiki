@@ -891,6 +891,7 @@ endfunction " }}}
 
 " vimwiki#base#find_prev_link
 function! vimwiki#base#find_prev_link() "{{{
+  "Jump 2 times if the cursor is in the middle of a link
   if synIDattr(synID(line('.'), col('.'), 0), "name") =~ "VimwikiLink.*" &&
         \ synIDattr(synID(line('.'), col('.')-1, 0), "name") =~ "VimwikiLink.*"
     call vimwiki#base#search_word(g:vimwiki_rxAnyLink, 'b')
