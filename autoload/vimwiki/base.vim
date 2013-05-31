@@ -891,6 +891,10 @@ endfunction " }}}
 
 " vimwiki#base#find_prev_link
 function! vimwiki#base#find_prev_link() "{{{
+  if synIDattr(synID(line('.'), col('.'), 0), "name") =~ "VimwikiLink.*" &&
+        \ synIDattr(synID(line('.'), col('.')-1, 0), "name") =~ "VimwikiLink.*"
+    call vimwiki#base#search_word(g:vimwiki_rxAnyLink, 'b')
+  endif
   call vimwiki#base#search_word(g:vimwiki_rxAnyLink, 'b')
 endfunction " }}}
 
