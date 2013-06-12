@@ -386,7 +386,8 @@ execute 'syntax match VimwikiTodo /'. g:vimwiki_rxTodo .'/'
 " main syntax groups {{{
 
 " Tables
-syntax match VimwikiTableRow /^\s*|.\+|\s*$/ 
+if 0
+syntax match VimwikiTableRow /^\s*[|│].\+|\s*$/ 
       \ transparent contains=VimwikiCellSeparator,
                            \ VimwikiLinkT,
                            \ VimwikiNoExistsLinkT,
@@ -402,31 +403,32 @@ syntax match VimwikiTableRow /^\s*|.\+|\s*$/
                            \ VimwikiCodeT,
                            \ VimwikiEqInT,
                            \ @Spell
+endif
 
-let g:vimwiki_beautiful_tables = 2
+let g:vimwiki_beautiful_tables = -1
 if exists("+conceallevel") && g:vimwiki_beautiful_tables >= 1
   hi! link Conceal Normal
-  syntax match VimwikiTableHeaderLine /^\s*|[|-]\+|\s*$/ transparent
+  syntax match VimwikiTableHeaderLine /^\s*[|│][|│-]\+[|│]\s*$/ transparent
         \ contains=VimwikiHeaderBeam,VimwikiHeaderLineBegin,
         \ VimwikiHeaderLineMiddle,VimwikiHeaderLineEnd
   if g:vimwiki_beautiful_tables == 1
     syntax match VimwikiHeaderBeam /-/ contained conceal cchar=─
-    syntax match VimwikiHeaderLineBegin /|\ze-/ contained conceal cchar=├
-    syntax match VimwikiHeaderLineEnd /-\@<=|/ contained conceal cchar=┤
-    syntax match VimwikiHeaderLineMiddle /-\@<=|-\@=/ contained conceal cchar=┼
-    syntax match VimwikiCellSeparator /|/ contained conceal cchar=│
+    syntax match VimwikiHeaderLineBegin /[|│]\ze-/ contained conceal cchar=├
+    syntax match VimwikiHeaderLineEnd /-\@<=[|│]/ contained conceal cchar=┤
+    syntax match VimwikiHeaderLineMiddle /-\@<=[|│]-\@=/ contained conceal cchar=┼
+    syntax match VimwikiCellSeparator /[|│]/ contained conceal cchar=│
   else
     syntax match VimwikiHeaderBeam /-/ contained conceal cchar=━
-    syntax match VimwikiHeaderLineBegin /|\ze-/ contained conceal cchar=┣
-    syntax match VimwikiHeaderLineEnd /-\@<=|/ contained conceal cchar=┫
-    syntax match VimwikiHeaderLineMiddle /-\@<=|-\@=/ contained conceal cchar=╋
-    syntax match VimwikiCellSeparator /|/ contained conceal cchar=┃
+    syntax match VimwikiHeaderLineBegin /[|│]\ze-/ contained conceal cchar=┣
+    syntax match VimwikiHeaderLineEnd /-\@<=[|│]/ contained conceal cchar=┫
+    syntax match VimwikiHeaderLineMiddle /-\@<=[|│]-\@=/ contained conceal cchar=╋
+    syntax match VimwikiCellSeparator /[|│]/ contained conceal cchar=┃
   endif
 elseif g:vimwiki_beautiful_tables == 0
-  syntax match VimwikiTableHeaderLine /^\s*|[|-]\+|\s*$/ transparent
+  syntax match VimwikiTableHeaderLine /^\s*[|│][|│-]\+[|│]\s*$/ transparent
       \ contains=VimwikiCellSeparator,VimwikiHeaderBeam
   syntax match VimwikiHeaderBeam /-/ contained
-  syntax match VimwikiCellSeparator /|/ contained
+  syntax match VimwikiCellSeparator /[|│]/ contained
 endif
 
 " List items

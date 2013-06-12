@@ -460,8 +460,12 @@ endif
 
 " Table mappings
 if g:vimwiki_table_mappings
-  inoremap <expr> <buffer> <Tab> vimwiki#tbl#kbd_tab()
-  inoremap <expr> <buffer> <S-Tab> vimwiki#tbl#kbd_shift_tab()
+  inoremap <buffer> <Tab> <C-R>=vimwiki#tbl#kbd_tab(mode())<CR>
+  if has("gui_running")
+    inoremap <expr> <buffer> <S-Tab> vimwiki#tbl#kbd_shift_tab()
+  else
+    inoremap <expr> <buffer> <Esc>[Z vimwiki#tbl#kbd_shift_tab()
+  endif
 endif
 
 nnoremap <buffer> gqq :VimwikiTableAlignQ<CR>
