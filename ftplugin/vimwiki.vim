@@ -427,12 +427,17 @@ endif
 nnoremap <silent><script><buffer>
       \ <Plug>VimwikiDiaryPrevDay :VimwikiDiaryPrevDay<CR>
 
-function! s:CR() "{{{
-  let res = vimwiki#lst#kbd_cr()
-  if res == "\<CR>" && g:vimwiki_table_mappings
-    let res = vimwiki#tbl#kbd_cr()
+function! s:CR(normal, just_mrkr) "{{{
+  if g:vimwiki_table_mappings
+    if vimwiki#tbl#is_table(getline('.'))
+      normal! l
+      call vimwiki#tbl#kbd_cr()
+      "normal! l
+      startinsert
+      return
+    endif
   endif
-  return res
+  call vimwiki#lst#kbd_cr(a:normal, a:just_mrkr)
 endfunction "}}}
 
 " List and Table <CR> mapping
@@ -458,15 +463,18 @@ elseif VimwikiGet('syntax') == 'media'
 endif
 
 
-" Table mappings
+"Table mappings
 if g:vimwiki_table_mappings
-  inoremap <buffer> <Tab> <C-R>=vimwiki#tbl#kbd_tab(mode())<CR>
+  inoremap <expr> <buffer> <Tab> vimwiki#tbl#kbd_tab(mode())
   if has("gui_running")
-    inoremap <expr> <buffer> <S-Tab> vimwiki#tbl#kbd_shift_tab()
+    inoremap <expr> <buffer> <S-Tab> vimwiki#tbl#kbd_shift_tab(mode())
   else
-    inoremap <expr> <buffer> <Esc>[Z vimwiki#tbl#kbd_shift_tab()
+    "XXX das muss man abschalten können
+    inoremap <expr> <buffer> <Esc>[Z vimwiki#tbl#kbd_shift_tab(mode())
   endif
 endif
+
+
 
 nnoremap <buffer> gqq :VimwikiTableAlignQ<CR>
 nnoremap <buffer> gww :VimwikiTableAlignW<CR>

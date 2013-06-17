@@ -393,6 +393,8 @@ call s:default('listsyms', ' .oOX')
 call s:default('use_calendar', 1)
 call s:default('table_mappings', 1)
 call s:default('table_auto_fmt', 1)
+call s:default('table_conceal', 1)
+call s:default('tables_box_chars', 1)
 call s:default('w32_dir_enc', '')
 call s:default('CJK_length', 0)
 call s:default('dir_link', '')
@@ -457,7 +459,7 @@ augroup vimwiki
     " Format tables when exit from insert mode. Do not use textwidth to
     " autowrap tables.
     if g:vimwiki_table_auto_fmt
-      exe 'autocmd InsertLeave *'.ext.' call vimwiki#tbl#format(line("."))'
+      exe 'autocmd InsertLeave *'.ext.' call vimwiki#tbl#format(line("."), 1)'
       exe 'autocmd InsertEnter *'.ext.' call vimwiki#tbl#reset_tw(line("."))'
     endif
   endfor

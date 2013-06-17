@@ -386,49 +386,22 @@ execute 'syntax match VimwikiTodo /'. g:vimwiki_rxTodo .'/'
 " main syntax groups {{{
 
 " Tables
-if 0
-syntax match VimwikiTableRow /^\s*[|│].\+|\s*$/ 
-      \ transparent contains=VimwikiCellSeparator,
-                           \ VimwikiLinkT,
-                           \ VimwikiNoExistsLinkT,
-                           \ VimwikiEmoticons,
-                           \ VimwikiTodo,
-                           \ VimwikiBoldT,
-                           \ VimwikiItalicT,
-                           \ VimwikiBoldItalicT,
-                           \ VimwikiItalicBoldT,
-                           \ VimwikiDelTextT,
-                           \ VimwikiSuperScriptT,
-                           \ VimwikiSubScriptT,
-                           \ VimwikiCodeT,
-                           \ VimwikiEqInT,
-                           \ @Spell
-endif
-
-let g:vimwiki_beautiful_tables = -1
-if exists("+conceallevel") && g:vimwiki_beautiful_tables >= 1
-  hi! link Conceal Normal
-  syntax match VimwikiTableHeaderLine /^\s*[|│][|│-]\+[|│]\s*$/ transparent
-        \ contains=VimwikiHeaderBeam,VimwikiHeaderLineBegin,
-        \ VimwikiHeaderLineMiddle,VimwikiHeaderLineEnd
-  if g:vimwiki_beautiful_tables == 1
-    syntax match VimwikiHeaderBeam /-/ contained conceal cchar=─
-    syntax match VimwikiHeaderLineBegin /[|│]\ze-/ contained conceal cchar=├
-    syntax match VimwikiHeaderLineEnd /-\@<=[|│]/ contained conceal cchar=┤
-    syntax match VimwikiHeaderLineMiddle /-\@<=[|│]-\@=/ contained conceal cchar=┼
-    syntax match VimwikiCellSeparator /[|│]/ contained conceal cchar=│
-  else
-    syntax match VimwikiHeaderBeam /-/ contained conceal cchar=━
-    syntax match VimwikiHeaderLineBegin /[|│]\ze-/ contained conceal cchar=┣
-    syntax match VimwikiHeaderLineEnd /-\@<=[|│]/ contained conceal cchar=┫
-    syntax match VimwikiHeaderLineMiddle /-\@<=[|│]-\@=/ contained conceal cchar=╋
-    syntax match VimwikiCellSeparator /[|│]/ contained conceal cchar=┃
-  endif
-elseif g:vimwiki_beautiful_tables == 0
-  syntax match VimwikiTableHeaderLine /^\s*[|│][|│-]\+[|│]\s*$/ transparent
-      \ contains=VimwikiCellSeparator,VimwikiHeaderBeam
-  syntax match VimwikiHeaderBeam /-/ contained
-  syntax match VimwikiCellSeparator /[|│]/ contained
+if !g:vimwiki_table_conceal
+  syntax match VimwikiTableRow /^\s*[|│].\+[|│]\s*$/ 
+        \ transparent contains=VimwikiLinkT,
+                            \ VimwikiNoExistsLinkT,
+                            \ VimwikiEmoticons,
+                            \ VimwikiTodo,
+                            \ VimwikiBoldT,
+                            \ VimwikiItalicT,
+                            \ VimwikiBoldItalicT,
+                            \ VimwikiItalicBoldT,
+                            \ VimwikiDelTextT,
+                            \ VimwikiSuperScriptT,
+                            \ VimwikiSubScriptT,
+                            \ VimwikiCodeT,
+                            \ VimwikiEqInT,
+                            \ @Spell
 endif
 
 " List items
@@ -589,10 +562,7 @@ hi def link VimwikiPlaceholder SpecialKey
 hi def link VimwikiPlaceholderParam String
 hi def link VimwikiHTMLtag SpecialKey
 
-hi def link VimwikiHeaderBeam VimwikiMarkers
-hi def link VimwikiHeaderLineBegin VimwikiMarkers
-hi def link VimwikiHeaderLineEnd VimwikiMarkers
-hi def link VimwikiHeaderLineMiddle VimwikiMarkers
+hi def link VimwikiEqInChar VimwikiMarkers
 hi def link VimwikiCellSeparator VimwikiMarkers
 hi def link VimwikiBoldChar VimwikiMarkers
 hi def link VimwikiItalicChar VimwikiMarkers

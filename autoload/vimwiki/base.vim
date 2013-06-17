@@ -1187,7 +1187,7 @@ function! vimwiki#base#TO_table_cell(inner, visual) "{{{
     let firsttime = sel_start == sel_end
 
     if firsttime
-      if !search('|\|\(-+-\)', 'cb', line('.'))
+      if !search('[|│├┼]\|\(-+-\)', 'cb', line('.'))
         return
       endif
       if getline('.')[virtcol('.')] == '+'
@@ -1200,7 +1200,7 @@ function! vimwiki#base#TO_table_cell(inner, visual) "{{{
     endif
 
     normal! `>
-    call search('|\|\(-+-\)', '', line('.'))
+    call search('[|│┼┤]\|\(-+-\)', '', line('.'))
     if getline('.')[virtcol('.')] == '+'
       normal! l
     endif
@@ -1221,14 +1221,14 @@ function! vimwiki#base#TO_table_cell(inner, visual) "{{{
     " it works.
     normal! hl
   else
-    if !search('|\|\(-+-\)', 'cb', line('.'))
+    if !search('[|│├┼]\|\(-+-\)', 'cb', line('.'))
       return
     endif
     if a:inner
       normal! 2l
     endif
     normal! v
-    call search('|\|\(-+-\)', '', line('.'))
+    call search('[|│┼┤]\|\(-+-\)', '', line('.'))
     if !a:inner && getline('.')[virtcol('.')-1] == '|'
       normal! h
     elseif a:inner
@@ -1268,7 +1268,7 @@ function! vimwiki#base#TO_table_col(inner, visual) "{{{
         let s_flag = 'cb'
       endif
       " search the column separator backwards
-      if !search('|\|\(-+-\)', s_flag, line('.'))
+      if !search('[|│├┼]\|\(-+-\)', s_flag, line('.'))
         return
       endif
       " -+- column separator is matched --> move cursor to the + sign
@@ -1283,13 +1283,13 @@ function! vimwiki#base#TO_table_col(inner, visual) "{{{
     endif
 
     normal! `>
-    if !firsttime && getline('.')[virtcol('.')] == '|'
+    if !firsttime && getline('.')[virtcol('.')] =~ '[|│]'
       normal! l
-    elseif a:inner && getline('.')[virtcol('.')+1] =~ '[|+]'
+    elseif a:inner && getline('.')[virtcol('.')+1] =~ '[|+│├┼]'
       normal! 2l
     endif
     " search for the next column separator
-    call search('|\|\(-+-\)', '', line('.'))
+    call search('[|│┼┤]\|\(-+-\)', '', line('.'))
     " Outer selection selects a column without border on the right. So we move
     " our cursor left if the previous search finds | border, not -+-.
     if getline('.')[virtcol('.')] != '+'
@@ -1322,7 +1322,7 @@ function! vimwiki#base#TO_table_col(inner, visual) "{{{
       let s_flag = 'cb'
     endif
     " search the column separator backwards
-    if !search('|\|\(-+-\)', s_flag, line('.'))
+    if !search('[|│├┼]\|\(-+-\)', s_flag, line('.'))
       return
     endif
     " -+- column separator is matched --> move cursor to the + sign
@@ -1337,7 +1337,7 @@ function! vimwiki#base#TO_table_col(inner, visual) "{{{
     exe "normal! \<C-V>"
 
     " search for the next column separator
-    call search('|\|\(-+-\)', '', line('.'))
+    call search('[|│┼┤]\|\(-+-\)', '', line('.'))
     " Outer selection selects a column without border on the right. So we move
     " our cursor left if the previous search finds | border, not -+-.
     if getline('.')[virtcol('.')] != '+'
