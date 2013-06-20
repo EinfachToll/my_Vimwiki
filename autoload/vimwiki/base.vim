@@ -1474,7 +1474,26 @@ endfunction " }}}
 "creates or updates TOC in current file
 function! vimwiki#base#table_of_contents()
   let g:vimwiki_toc_identifier = 'Inhalt'
-  let target_line = 0
+  let bullet = vimwiki#lst#default_symbol().' '
+  let toc_line = 0
+
+  let toc_header = substitute(g:vimwiki_rxH1_Template, '__Header__', '\='."'".g:vimwiki_toc_identifier."'", '')
+  let lnum = 1
+  while lnum <= &modelines + 2 && lnum <= line('$')
+    if getline(lnum) =~# toc_header
+      let toc_line = lnum - 1
+      let tl = lnum
+      while 1
+        let tl += 1
+        if tl > line('$') || getline(tl) !~ '^\s*'.bullet.g:vimwiki_rxWikiLink.'\s*$'
+          exe lnum.','.string(tl-1).'delete'
+          break
+        endif
+      endwhile
+      break
+    endif
+    let lnum += 1
+  endwhile
 
   let toc_lines = []
   for lnum in range(1, line('$'))
@@ -1487,18 +1506,19 @@ function! vimwiki#base#table_of_contents()
     call add(toc_lines, [h_level, h_text])
   endfor
 
-  call append(target_line, substitute(g:vimwiki_rxH1_Template, '__Header__', '\='."'".g:vimwiki_toc_identifier."'", ''))
-  let target_line += 1
+  call append(toc_line, substitute(g:vimwiki_rxH1_Template, '__Header__', '\='."'".g:vimwiki_toc_identifier."'", ''))
+  let toc_line += 1
 
   let indentstring = repeat(' ', vimwiki#lst#get_list_margin())
-  let bullet = vimwiki#lst#default_symbol().' '
   for [lvl, txt] in toc_lines
     let link = substitute(g:vimwiki_WikiLinkTemplate2, '__LinkUrl__', '\='."'".'#'.txt."'", '') 
     let link = substitute(link, '__LinkDescription__', '\='."'".txt."'", '')
-    call append(target_line, repeat(indentstring, lvl-1).bullet.link)
-    let target_line += 1
+    call append(toc_line, repeat(indentstring, lvl-1).bullet.link)
+    let toc_line += 1
   endfor
-  call append(target_line, '')
+  if getline(toc_line+1) !~ '^\s*$'
+    call append(toc_line, '')
+  endif
 endfunction
 "}}}
 
