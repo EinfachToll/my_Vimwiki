@@ -264,6 +264,8 @@ command! -buffer Vimwiki2HTMLBrowse
 command! -buffer VimwikiAll2HTML
       \ call vimwiki#html#WikiAll2HTML(expand(VimwikiGet('path_html')))
 
+command! -buffer VimwikiTableOfContents call vimwiki#base#table_of_contents()
+
 command! -buffer VimwikiNextLink call vimwiki#base#find_next_link()
 command! -buffer VimwikiPrevLink call vimwiki#base#find_prev_link()
 command! -buffer VimwikiDeleteLink call vimwiki#base#delete_link()
@@ -290,7 +292,7 @@ exe 'command! -buffer -nargs=* VimwikiSearch lvimgrep <args> '.
 exe 'command! -buffer -nargs=* VWS lvimgrep <args> '.
       \ escape(VimwikiGet('path').'**/*'.VimwikiGet('ext'), ' ')
 
-command! -buffer -nargs=1 VimwikiGoto call vimwiki#base#goto("<args>")
+command! -buffer -nargs=+ VimwikiGoto call vimwiki#base#goto(<f-args>)
 
 
 " list commands
