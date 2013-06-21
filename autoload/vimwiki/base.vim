@@ -342,6 +342,7 @@ function! vimwiki#base#resolve_scheme(lnk, as_html) " {{{ Resolve scheme
         let lnk = join(split_lnk[:-2], '#')
         let anchor = split_lnk[-1]
       endif
+    endif
   endif
 
   " do nothing if scheme is unknown to vimwiki
@@ -489,10 +490,9 @@ function! vimwiki#base#open_link(cmd, link, ...) "{{{
     return
   endif
 
-  let update_prev_link = (
-        \ scheme == '' || 
-        \ scheme =~ 'wiki' || 
-        \ scheme =~ 'diary' ? 1 : 0)
+  let update_prev_link = ( (scheme == '' || scheme =~ 'wiki' || scheme =~ 'diary') 
+        \ && lnk != expand('%:t:r')
+        \ ? 1 : 0)
 
   let use_system_open = (
         \ scheme == '' || 
