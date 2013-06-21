@@ -331,8 +331,7 @@ function! vimwiki#base#resolve_scheme(lnk, as_html) " {{{ Resolve scheme
   "extract anchor
   if scheme =~ 'wiki' || scheme =~ 'diary'
     let split_lnk = split(lnk, '#', 1)
-    if len(split_lnk) <= 1
-      let lnk = split_lnk[0]
+    if len(split_lnk) <= 1 || split_lnk[-1] == ''
       let anchor = ''
     else
       if len(split_lnk) == 2 && split_lnk[0] == ''
@@ -490,7 +489,7 @@ function! vimwiki#base#open_link(cmd, link, ...) "{{{
     return
   endif
 
-  let update_prev_link = ( (scheme == '' || scheme =~ 'wiki' || scheme =~ 'diary') 
+  let update_prev_link = ( (scheme == '' || scheme =~ 'wiki' || scheme =~ 'diary')
         \ && lnk != expand('%:t:r')
         \ ? 1 : 0)
 
@@ -670,12 +669,12 @@ function! s:jump_to_anchor(anchor)
     return
   endif
 
-  let anchor_line = '\C\%'.a:anchor.'l'
+  let anchor_line = '\%'.a:anchor.'l'
   if a:anchor =~ '^\d\+$' && search(anchor_line, 'c')
     return
   endif
 
-  if search(a:anchor, 'c')
+  if search('\C'.a:anchor, 'c')
     return
   endif
   echo "No Anchor ".a:anchor." found"
