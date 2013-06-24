@@ -1472,11 +1472,10 @@ endfunction " }}}
 
 "creates or updates TOC in current file
 function! vimwiki#base#table_of_contents()
-  let g:vimwiki_toc_identifier = 'Inhalt'
   let bullet = vimwiki#lst#default_symbol().' '
   let toc_line = 0
 
-  let toc_header = substitute(g:vimwiki_rxH1_Template, '__Header__', '\='."'".g:vimwiki_toc_identifier."'", '')
+  let toc_header = substitute(g:vimwiki_rxH1_Template, '__Header__', '\='."'".g:vimwiki_toc_string."'", '')
   let lnum = 1
   while lnum <= &modelines + 2 && lnum <= line('$')
     if getline(lnum) =~# toc_header
@@ -1505,7 +1504,7 @@ function! vimwiki#base#table_of_contents()
     call add(toc_lines, [h_level, h_text])
   endfor
 
-  call append(toc_line, substitute(g:vimwiki_rxH1_Template, '__Header__', '\='."'".g:vimwiki_toc_identifier."'", ''))
+  call append(toc_line, substitute(g:vimwiki_rxH1_Template, '__Header__', '\='."'".g:vimwiki_toc_string."'", ''))
   let toc_line += 1
 
   let indentstring = repeat(' ', vimwiki#lst#get_list_margin())

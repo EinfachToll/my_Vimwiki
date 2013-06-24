@@ -413,7 +413,7 @@ function! s:tag_wikiincl(value) "{{{
     let descr = matchstr(str, vimwiki#html#incl_match_arg(1))
     let verbatim_str = matchstr(str, vimwiki#html#incl_match_arg(2))
     " resolve url
-    let [idx, scheme, path, subdir, lnk, ext, url] = 
+    let [idx, scheme, path, subdir, lnk, ext, url, anchor] = 
           \ vimwiki#base#resolve_scheme(url_0, 1)
     " generate html output
     " TODO: migrate non-essential debugging messages into g:VimwikiLog
@@ -446,7 +446,7 @@ function! s:tag_wikilink(value) "{{{
   let descr = (substitute(descr,'^\s*\(.*\)\s*$','\1','') != '' ? descr : url)
 
   " resolve url
-  let [idx, scheme, path, subdir, lnk, ext, url] = 
+  let [idx, scheme, path, subdir, lnk, ext, url, anchor] = 
         \ vimwiki#base#resolve_scheme(url, 1)
 
   " generate html output

@@ -1891,17 +1891,18 @@ similar to 'local:' and 'file:' schemes, but are always opened with Vim: >
     else
       return 0
     endif
-    let [idx, scheme, path, subdir, lnk, ext, url] = 
+    let [idx, scheme, path, subdir, lnk, ext, url, anchor] = 
          \ vimwiki#base#resolve_scheme(link, 0)
     if g:vimwiki_debug
       echom 'LinkHandler: idx='.idx.', scheme=[v]'.scheme.', path='.path.
-           \ ', subdir='.subdir.', lnk='.lnk.', ext='.ext.', url='.url
+           \ ', subdir='.subdir.', lnk='.lnk.', ext='.ext.', url='.url.
+           \ ', anchor='.anchor
     endif
     if url == ''
       echom 'Vimwiki Error: Unable to resolve link!'
       return 0
     else
-      call vimwiki#base#edit_file('tabnew', url, [], 0)
+      call vimwiki#base#edit_file('tabnew', url, '', [], 0)
       return 1
     endif
   endfunction " }}}
@@ -1923,7 +1924,7 @@ cannot otherwise convert the link.  A customized handler might look like this: >
     " complete URL
     let url_0 = matchstr(str, g:vimwiki_rxWikiInclMatchUrl)
     " URL parts
-    let [scheme, path, subdir, lnk, ext, url] = 
+    let [scheme, path, subdir, lnk, ext, url, anchor] = 
           \ vimwiki#base#resolve_scheme(url_0, VimwikiGet('ext'))
     let arg1 = matchstr(str, VimwikiWikiInclMatchArg(1))
     let arg2 = matchstr(str, VimwikiWikiInclMatchArg(2))
